@@ -8,7 +8,7 @@
 
 <!--
 =================================================================
-  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V2.2
+  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V2.3
 
   HOW TO UPDATE
   ─────────────
@@ -256,27 +256,37 @@ const RELAY_DATA = {
     background: var(--surface-active);
     border-left-width: 3px;
     padding-left: 26px;
+    margin: 8px 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 3px 12px rgba(0,0,0,0.05);
   }
 
   .card-active:hover { background: var(--surface-active); border-color: var(--border-card); }
 
   .card-active .card-name { color: var(--accent); font-size: 16px; letter-spacing: -0.02em; }
 
-  .card-lifecycle-inactive { background: var(--bg); border-color: var(--border-card); }
-  .card-lifecycle-inactive:hover { background: var(--bg); border-color: var(--border-card); }
-  .card-lifecycle-inactive .card-name { color: var(--text-muted); font-weight: 500; }
+  .card-lifecycle-inactive { background: var(--bg); border-color: rgba(0,0,0,0.05); box-shadow: none; }
+  .card-lifecycle-inactive:hover { background: var(--bg); border-color: rgba(0,0,0,0.05); }
+  .card-lifecycle-inactive .card-name { color: var(--text-muted); font-weight: 400; }
   .card-lifecycle-inactive .card-tag,
   .card-lifecycle-inactive .card-state,
   .card-lifecycle-inactive .card-next,
   .card-lifecycle-inactive .card-context,
-  .card-lifecycle-inactive .card-next-divider { color: var(--text-muted); opacity: 0.7; }
+  .card-lifecycle-inactive .card-next-divider { color: var(--text-muted); }
+
+  .card-stale-depth {
+    background: var(--stale-soft);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 4px rgba(0,0,0,0.02);
+  }
 
   /* ── Dark mode environment and interaction overrides ─────────── */
   @media (prefers-color-scheme: dark) {
     .card:hover                    { background: var(--surface-hover); border-color: rgba(255,255,255,0.10); }
     .card-active:hover             { background: var(--surface-active); border-color: var(--border-card); }
-    .card-lifecycle-inactive:hover { background: var(--bg); border-color: var(--border-card); }
+    .card-lifecycle-inactive:hover { background: var(--bg); border-color: rgba(255,255,255,0.05); }
     .card                          { box-shadow: 0 1px 4px rgba(0,0,0,0.35); }
+    .card-active                   { box-shadow: 0 1px 5px rgba(0,0,0,0.5), 0 3px 14px rgba(0,0,0,0.3); }
+    .card-stale-depth              { background: var(--stale-soft); box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+    .card-lifecycle-inactive       { border-color: rgba(255,255,255,0.05); box-shadow: none; }
     #ambient-layer, #ambient-breath { display: none; }
   }
 
@@ -386,6 +396,11 @@ const RELAY_DATA = {
     pointer-events: none;
     background: radial-gradient(ellipse 55% 45% at 50% 30%, #ffffff 0%, transparent 65%);
     animation: atmospheric-breath 90s ease-in-out infinite;
+  }
+
+  /* ── Reduced motion compliance ─────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    #ambient-breath { animation: none; }
   }
 
   /* ── Entrance arrival ───────────────────────────────────────── */
@@ -579,7 +594,7 @@ const RELAY_DATA = {
   else { noteEl.style.display = "none"; }
 
   /* Footer */
-  var RELAY_VERSION = "2.2";
+  var RELAY_VERSION = "2.3";
   document.getElementById("footer-version").textContent = "BOS Relay " + RELAY_VERSION;
   document.getElementById("last-edited").textContent    = formatDate(effectiveLastEdited);
 
@@ -691,7 +706,8 @@ const RELAY_DATA = {
            touchedHtml,
          "</div>"].join("");
 
-    var cardClass = "card" + (isActive ? " card-active" : "") + (inactive ? " card-lifecycle-inactive" : "");
+    var isStaleDepth = !isActive && !inactive && h.cls === "health-stale";
+    var cardClass = "card" + (isActive ? " card-active" : "") + (inactive ? " card-lifecycle-inactive" : "") + (isStaleDepth ? " card-stale-depth" : "");
     var card = document.createElement("div");
     card.className = cardClass;
     if (isActive) {
