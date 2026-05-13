@@ -8,7 +8,7 @@
 
 <!--
 =================================================================
-  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V2.0
+  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V2.1
 
   HOW TO UPDATE
   ─────────────
@@ -81,7 +81,7 @@ const RELAY_DATA = {
 
   activeProject: "DigiX Estate Studio",   // change when focus shifts
 
-  note: "V2.0 deployed. Environmental foundation: ambient luminance, border dissolution, material easing, surface warmth.",
+  note: "V2.1 deployed. Reading architecture: header reframed, operator note elevated, card rhythm deepened.",
 
   // lastEdited: "today",   // optional — inferred from projects if omitted
 
@@ -105,7 +105,7 @@ const RELAY_DATA = {
 
     {
       // ── update every session ────────────────────────────
-      state:   "V2.0 complete. Environmental foundation deployed. Ambient luminance, border dissolution, weighted easing, surface warmth on approach.",
+      state:   "V2.1 complete. Reading architecture deployed. Header reframed, operator note unframed, card rhythm deepened.",
       next:    "Inhabit. Return only when lived friction accumulates over genuine use.",
       updated: "today",
 
@@ -216,31 +216,28 @@ const RELAY_DATA = {
 
   .page { max-width: 680px; margin: 0 auto; padding: 48px 24px 72px; }
 
-  .header { margin-bottom: 8px; }
+  .header { margin-bottom: 36px; }
 
-  .header-top {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
+  .header-date {
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--text-strong);
+    line-height: 1.25;
     margin-bottom: 4px;
   }
 
-  .header-title   { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-strong); }
-  .header-meta    { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
-  .header-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+  .header-operator { font-size: 12px; color: var(--text-muted); }
 
   .operator-note {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--text-body);
     font-style: italic;
-    margin-bottom: 20px;
-    padding-left: 12px;
-    border-left: 2px solid var(--border);
-    line-height: 1.5;
+    margin-bottom: 28px;
+    line-height: 1.6;
   }
 
-  .system-summary { font-size: 12px; color: var(--text-muted); margin-bottom: 32px; }
+  .system-summary { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 32px; }
 
   .card-list { display: flex; flex-direction: column; gap: 16px; }
 
@@ -248,7 +245,7 @@ const RELAY_DATA = {
     background: var(--surface);
     border: 1px solid var(--border-card);
     border-radius: 10px;
-    padding: 20px 24px;
+    padding: 24px 28px;
     transition: background-color 0.35s cubic-bezier(0.45, 0, 0.55, 1), border-color 0.35s cubic-bezier(0.45, 0, 0.55, 1);
   }
 
@@ -257,7 +254,7 @@ const RELAY_DATA = {
   .card-active {
     background: var(--surface-active);
     border-left-width: 3px;
-    padding-left: 22px;
+    padding-left: 26px;
   }
 
   .card-active:hover { background: var(--surface-active); border-color: var(--border-card); }
@@ -281,7 +278,7 @@ const RELAY_DATA = {
     .card-lifecycle-inactive:hover { background: var(--bg); border-color: var(--border-card); }
   }
 
-  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
 
   .card-name { font-size: 15px; font-weight: 600; color: var(--text-strong); letter-spacing: -0.015em; }
 
@@ -295,7 +292,7 @@ const RELAY_DATA = {
     white-space: nowrap;
   }
 
-  .card-state { font-size: 14px; color: var(--text-body); margin-bottom: 8px; line-height: 1.55; }
+  .card-state { font-size: 14px; color: var(--text-body); margin-bottom: 12px; line-height: 1.65; }
   .card-state-uncertain { color: var(--text-muted); margin-bottom: 4px; }
 
   .card-uncertain-note {
@@ -319,12 +316,12 @@ const RELAY_DATA = {
 
   .card-attention-age { margin-top: 4px; font-size: 11px; color: var(--text-muted); font-style: italic; }
 
-  .card-next-divider { height: 1px; background: var(--border); margin: 0 0 8px; opacity: 0.6; }
+  .card-next-divider { height: 1px; background: var(--border); margin: 0 0 12px; opacity: 0.6; }
 
-  .card-next { font-size: 14px; color: var(--text-strong); font-weight: 500; line-height: 1.5; margin-bottom: 16px; }
-  .card-next.has-context { margin-bottom: 4px; }
+  .card-next { font-size: 14px; color: var(--text-strong); font-weight: 500; line-height: 1.5; margin-bottom: 20px; }
+  .card-next.has-context { margin-bottom: 6px; }
 
-  .card-context { font-size: 13px; color: var(--text-muted); font-style: italic; line-height: 1.5; margin-bottom: 16px; }
+  .card-context { font-size: 13px; color: var(--text-muted); font-style: italic; line-height: 1.5; margin-bottom: 20px; }
 
   .card-footer { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
@@ -403,11 +400,8 @@ const RELAY_DATA = {
 <div class="page" id="relay-page" style="display:none">
 
   <div class="header">
-    <div class="header-top">
-      <div class="header-title">BOS Relay</div>
-      <div class="header-meta" id="today-date"></div>
-    </div>
-    <div class="header-subtitle" id="header-subtitle"></div>
+    <div class="header-date" id="today-date"></div>
+    <div class="header-operator" id="header-operator"></div>
   </div>
 
   <div class="operator-note" id="operator-note"></div>
@@ -513,7 +507,7 @@ const RELAY_DATA = {
   /* Header */
   var op = BOS_META.operator || "";
   if (op) document.title = "BOS Relay · " + op;
-  document.getElementById("header-subtitle").textContent = op ? op + " · Bhaskarwar-OS" : "Bhaskarwar-OS";
+  document.getElementById("header-operator").textContent = op || "Bhaskarwar-OS";
   document.getElementById("today-date").textContent = new Date().toLocaleDateString("en-GB", {
     weekday: "long", day: "numeric", month: "long", year: "numeric"
   });
@@ -524,9 +518,9 @@ const RELAY_DATA = {
   else { noteEl.style.display = "none"; }
 
   /* Footer */
-  var RELAY_VERSION = "2.0";
+  var RELAY_VERSION = "2.1";
   document.getElementById("footer-version").textContent = "BOS Relay " + RELAY_VERSION;
-  document.getElementById("last-edited").textContent    = "Last edited: " + formatDate(effectiveLastEdited);
+  document.getElementById("last-edited").textContent    = formatDate(effectiveLastEdited);
 
   /* Since-date with elapsed depth */
   if (BOS_META.sinceDate) {
