@@ -8,7 +8,7 @@
 
 <!--
 =================================================================
-  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V2.4
+  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V2.5
 
   HOW TO UPDATE
   ─────────────
@@ -239,23 +239,23 @@ const RELAY_DATA = {
 
   .system-summary { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 32px; }
 
-  .card-list { display: flex; flex-direction: column; gap: 16px; }
+  .card-list { display: flex; flex-direction: column; gap: 20px; }
 
   .card {
     background: var(--surface);
     border: 1px solid var(--border-card);
-    border-radius: 10px;
-    padding: 24px 28px;
+    border-radius: 6px;
+    padding: 28px 32px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.03);
     transition: background-color 0.35s cubic-bezier(0.45, 0, 0.55, 1), border-color 0.35s cubic-bezier(0.45, 0, 0.55, 1);
   }
 
-  .card:hover { background: var(--surface-hover); border-color: rgba(0,0,0,0.12); }
+  .card:hover { border-color: rgba(0,0,0,0.11); }
 
   .card-active {
     background: var(--surface-active);
     border-left-width: 3px;
-    padding-left: 26px;
+    padding-left: 30px;
     margin: 8px 0;
     box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 3px 12px rgba(0,0,0,0.05);
   }
@@ -270,8 +270,7 @@ const RELAY_DATA = {
   .card-lifecycle-inactive .card-tag,
   .card-lifecycle-inactive .card-state,
   .card-lifecycle-inactive .card-next,
-  .card-lifecycle-inactive .card-context,
-  .card-lifecycle-inactive .card-next-divider { color: var(--text-muted); }
+  .card-lifecycle-inactive .card-context { color: var(--text-muted); }
 
   .card-stale-depth {
     background: var(--stale-soft);
@@ -280,7 +279,7 @@ const RELAY_DATA = {
 
   /* ── Dark mode environment and interaction overrides ─────────── */
   @media (prefers-color-scheme: dark) {
-    .card:hover                    { background: var(--surface-hover); border-color: rgba(255,255,255,0.10); }
+    .card:hover                    { border-color: rgba(255,255,255,0.11); }
     .card-active:hover             { background: var(--surface-active); border-color: var(--border-card); }
     .card-lifecycle-inactive:hover { background: var(--bg); border-color: rgba(255,255,255,0.05); }
     .card                          { box-shadow: 0 1px 4px rgba(0,0,0,0.35); }
@@ -290,21 +289,13 @@ const RELAY_DATA = {
     #ambient-layer, #ambient-breath { display: none; }
   }
 
-  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .card-header { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; margin-bottom: 16px; }
 
   .card-name { font-size: 15px; font-weight: 600; color: var(--text-strong); letter-spacing: -0.015em; }
 
-  .card-tag {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text-muted);
-    background: var(--tool-bg);
-    padding: 2px 8px;
-    border-radius: 20px;
-    white-space: nowrap;
-  }
+  .card-tag { font-size: 11px; color: var(--text-muted); letter-spacing: 0.01em; }
 
-  .card-state { font-size: 14px; color: var(--text-body); margin-bottom: 12px; line-height: 1.65; }
+  .card-state { font-size: 14px; color: var(--text-body); margin-bottom: 16px; line-height: 1.65; }
   .card-state-uncertain { color: var(--text-muted); margin-bottom: 4px; }
 
   .card-uncertain-note {
@@ -328,36 +319,26 @@ const RELAY_DATA = {
 
   .card-attention-age { margin-top: 4px; font-size: 11px; color: var(--text-muted); font-style: italic; }
 
-  .card-next-divider { height: 1px; background: var(--border); margin: 0 0 12px; opacity: 0.6; }
-
-  .card-next { font-size: 14px; color: var(--text-strong); font-weight: 500; line-height: 1.5; margin-bottom: 20px; }
+  .card-next { font-size: 14px; color: var(--text-strong); font-weight: 500; line-height: 1.6; margin-bottom: 20px; }
   .card-next.has-context { margin-bottom: 6px; }
 
-  .card-context { font-size: 13px; color: var(--text-muted); font-style: italic; line-height: 1.5; margin-bottom: 20px; }
+  .card-context { font-size: 13px; color: var(--text-muted); font-style: italic; line-height: 1.6; margin-bottom: 20px; }
 
   .card-footer { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
-  .card-tool {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--tool-text);
-    background: var(--tool-bg);
-    border: 1px solid var(--border);
-    padding: 3px 10px;
-    border-radius: 4px;
-  }
+  .card-tool { font-size: 12px; color: var(--tool-text); }
 
   .card-touched { font-size: 12px; color: var(--text-muted); margin-left: auto; }
   .card-done-label { font-size: 12px; color: var(--text-muted); font-style: italic; }
 
-  .health { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
-  .health-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .health { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; }
+  .health-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 
-  .health-current { color: var(--accent); background: var(--accent-soft); }
+  .health-current { color: var(--accent); }
   .health-current .health-dot { background: var(--accent); }
-  .health-review  { color: var(--amber); background: var(--amber-soft); }
+  .health-review  { color: var(--amber); }
   .health-review  .health-dot { background: var(--amber); }
-  .health-stale   { color: var(--stale); background: var(--stale-soft); }
+  .health-stale   { color: var(--stale); }
   .health-stale   .health-dot { background: var(--stale); }
 
   .page-footer {
@@ -585,7 +566,7 @@ const RELAY_DATA = {
   else { noteEl.style.display = "none"; }
 
   /* Footer */
-  var RELAY_VERSION = "2.4";
+  var RELAY_VERSION = "2.5";
   document.getElementById("footer-version").textContent = "BOS Relay " + RELAY_VERSION;
   document.getElementById("last-edited").textContent    = formatDate(effectiveLastEdited);
 
@@ -681,13 +662,12 @@ const RELAY_DATA = {
     var nextClass   = "card-next" + (hasContext ? " has-context" : "");
 
     var nextSectionHtml = isDone ? "" : [
-      '<div class="card-next-divider"></div>',
       '<div class="' + nextClass + '">' + esc(p.next || "") + "</div>",
       contextHtml
     ].join("");
 
     var touchedHtml = (h.cls !== "health-current")
-      ? '<span class="card-touched">Last touched ' + formatDate(p.updated) + "</span>" : "";
+      ? '<span class="card-touched">' + formatDate(p.updated) + "</span>" : "";
 
     var footerHtml = isDone
       ? '<div class="card-footer"><span class="card-done-label">Completed</span></div>'
