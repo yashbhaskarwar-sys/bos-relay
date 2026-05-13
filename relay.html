@@ -8,7 +8,7 @@
 
 <!--
 =================================================================
-  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V2.1
+  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V2.2
 
   HOW TO UPDATE
   ─────────────
@@ -203,7 +203,7 @@ const RELAY_DATA = {
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    background: radial-gradient(ellipse 70% 55% at 50% 25%, rgba(255,255,255,0.06) 0%, transparent 65%), var(--bg);
+    background: var(--bg);
     color: var(--text-body);
     line-height: 1.55;
     font-size: 15px;
@@ -246,6 +246,7 @@ const RELAY_DATA = {
     border: 1px solid var(--border-card);
     border-radius: 10px;
     padding: 24px 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.03);
     transition: background-color 0.35s cubic-bezier(0.45, 0, 0.55, 1), border-color 0.35s cubic-bezier(0.45, 0, 0.55, 1);
   }
 
@@ -272,10 +273,11 @@ const RELAY_DATA = {
 
   /* ── Dark mode environment and interaction overrides ─────────── */
   @media (prefers-color-scheme: dark) {
-    body                           { background: var(--bg); }
     .card:hover                    { background: var(--surface-hover); border-color: rgba(255,255,255,0.10); }
     .card-active:hover             { background: var(--surface-active); border-color: var(--border-card); }
     .card-lifecycle-inactive:hover { background: var(--bg); border-color: var(--border-card); }
+    .card                          { box-shadow: 0 1px 4px rgba(0,0,0,0.35); }
+    #ambient-layer, #ambient-breath { display: none; }
   }
 
   .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
@@ -355,26 +357,50 @@ const RELAY_DATA = {
     font-size: 12px;
     color: var(--text-muted);
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
   }
 
-  .footer-phrase { font-style: italic; }
-
   .footer-right { display: flex; align-items: center; gap: 8px; white-space: nowrap; flex-wrap: wrap; }
   .footer-sep { opacity: 0.4; }
 
-  /* ── Entrance fade ─────────────────────────────────────────── */
-  /* Starts at opacity 0; JS triggers the transition after render */
+  /* ── Ambient presence layers ───────────────────────────────── */
+  #ambient-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 55% at 50% 25%, rgba(255,255,255,0.06) 0%, transparent 65%);
+    transition: transform 4s cubic-bezier(0.45, 0, 0.55, 1);
+  }
+
+  @keyframes atmospheric-breath {
+    0%, 100% { opacity: 0; }
+    50%       { opacity: 0.008; }
+  }
+
+  #ambient-breath {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 55% 45% at 50% 30%, #ffffff 0%, transparent 65%);
+    animation: atmospheric-breath 90s ease-in-out infinite;
+  }
+
+  /* ── Entrance arrival ───────────────────────────────────────── */
+  /* Slower settling — environment was already here */
   #relay-page {
+    position: relative;
+    z-index: 1;
     opacity: 0;
-    transition: opacity 0.3s cubic-bezier(0.45, 0, 0.55, 1);
+    transition: opacity 1.0s cubic-bezier(0.45, 0, 0.55, 1) 0.15s;
   }
 
   .relay-error {
     display: none;
+    position: relative;
+    z-index: 1;
     padding: 64px 24px;
     max-width: 680px;
     margin: 0 auto;
@@ -389,6 +415,9 @@ const RELAY_DATA = {
 
 </head>
 <body>
+
+<div id="ambient-layer" aria-hidden="true"></div>
+<div id="ambient-breath" aria-hidden="true"></div>
 
 <div class="relay-error" id="relay-error">
   <strong>BOS Relay couldn't load.</strong><br><br>
@@ -409,7 +438,6 @@ const RELAY_DATA = {
   <div class="card-list" id="card-list"></div>
 
   <div class="page-footer">
-    <span class="footer-phrase">Your operational position, always current.</span>
     <span class="footer-right">
       <span id="footer-version"></span>
       <span class="footer-sep" id="since-sep">·</span>
@@ -467,11 +495,12 @@ const RELAY_DATA = {
     return !!p.active;
   }
 
-  /* Time-of-day atmosphere — dark-mode aware */
-  (function () {
-    var h      = new Date().getHours();
-    var r      = document.documentElement;
-    var isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  /* Time-of-day atmosphere — dark-mode aware, re-evaluated on interval */
+  var isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  function applyAtmosphere() {
+    var h = new Date().getHours();
+    var r = document.documentElement;
 
     if (isDark) {
       if (h < 8) {
@@ -479,6 +508,9 @@ const RELAY_DATA = {
       } else if (h >= 20) {
         r.style.setProperty("--bg",      "#131210");
         r.style.setProperty("--surface", "#1c1b19");
+      } else {
+        r.style.removeProperty("--bg");
+        r.style.removeProperty("--surface");
       }
     } else {
       if (h < 8) {
@@ -490,8 +522,37 @@ const RELAY_DATA = {
         r.style.setProperty("--surface-active", "#fdf9f2");
         r.style.setProperty("--tool-bg",        "#ede9df");
         r.style.setProperty("--border",         "#e5e1d8");
+      } else {
+        r.style.removeProperty("--bg");
+        r.style.removeProperty("--surface");
+        r.style.removeProperty("--surface-active");
+        r.style.removeProperty("--tool-bg");
+        r.style.removeProperty("--border");
       }
     }
+  }
+
+  applyAtmosphere();
+  setInterval(applyAtmosphere, 5 * 60 * 1000);
+
+  /* Occupancy awareness — coarse zone drift, 3s dwell, 4s CSS transition */
+  (function () {
+    var layer = document.getElementById("ambient-layer");
+    if (!layer || isDark) return;
+    var zoneX = 1, zoneY = 1, timer = null;
+    document.addEventListener("mousemove", function (e) {
+      var nx = Math.min(2, Math.floor(e.clientX / window.innerWidth  * 3));
+      var ny = Math.min(2, Math.floor(e.clientY / window.innerHeight * 3));
+      if (nx !== zoneX || ny !== zoneY) {
+        zoneX = nx; zoneY = ny;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          var dx = (zoneX - 1) * 25;
+          var dy = (zoneY - 1) * 15;
+          layer.style.transform = "translate(" + dx + "px, " + dy + "px)";
+        }, 3000);
+      }
+    });
   })();
 
   /* Infer lastEdited */
@@ -518,7 +579,7 @@ const RELAY_DATA = {
   else { noteEl.style.display = "none"; }
 
   /* Footer */
-  var RELAY_VERSION = "2.1";
+  var RELAY_VERSION = "2.2";
   document.getElementById("footer-version").textContent = "BOS Relay " + RELAY_VERSION;
   document.getElementById("last-edited").textContent    = formatDate(effectiveLastEdited);
 
