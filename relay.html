@@ -8,7 +8,7 @@
 
 <!--
 =================================================================
-  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V1.9
+  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V2.0
 
   HOW TO UPDATE
   ─────────────
@@ -81,7 +81,7 @@ const RELAY_DATA = {
 
   activeProject: "DigiX Estate Studio",   // change when focus shifts
 
-  note: "V1.9 deployed. Tier 2 refinements: hover tactility, active card presence, attention register, badge grammar.",
+  note: "V2.0 deployed. Environmental foundation: ambient luminance, border dissolution, material easing, surface warmth.",
 
   // lastEdited: "today",   // optional — inferred from projects if omitted
 
@@ -105,7 +105,7 @@ const RELAY_DATA = {
 
     {
       // ── update every session ────────────────────────────
-      state:   "V1.9 complete. Tier 2 refinements deployed. Hover tactility, active card spatial presence, attention register, badge grammar.",
+      state:   "V2.0 complete. Environmental foundation deployed. Ambient luminance, border dissolution, weighted easing, surface warmth on approach.",
       next:    "Inhabit. Return only when lived friction accumulates over genuine use.",
       updated: "today",
 
@@ -168,6 +168,8 @@ const RELAY_DATA = {
     --stale-soft:     #f2f1ee;
     --tool-bg:        #f0efeb;
     --tool-text:      #3d3d3d;
+    --border-card:    rgba(0,0,0,0.07);
+    --surface-hover:  #fefdf9;
   }
 
   /* ── Dark mode tokens ──────────────────────────────────────── */
@@ -192,6 +194,8 @@ const RELAY_DATA = {
       --stale-soft:     #1c1b1a;
       --tool-bg:        #222221;
       --tool-text:      #7a7874;
+      --border-card:    rgba(255,255,255,0.07);
+      --surface-hover:  #202020;
     }
   }
 
@@ -199,7 +203,7 @@ const RELAY_DATA = {
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    background: var(--bg);
+    background: radial-gradient(ellipse 70% 55% at 50% 25%, rgba(255,255,255,0.06) 0%, transparent 65%), var(--bg);
     color: var(--text-body);
     line-height: 1.55;
     font-size: 15px;
@@ -242,13 +246,13 @@ const RELAY_DATA = {
 
   .card {
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-card);
     border-radius: 10px;
     padding: 20px 24px;
-    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    transition: background-color 0.35s cubic-bezier(0.45, 0, 0.55, 1), border-color 0.35s cubic-bezier(0.45, 0, 0.55, 1);
   }
 
-  .card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-color: #d4d2cd; }
+  .card:hover { background: var(--surface-hover); border-color: rgba(0,0,0,0.12); }
 
   .card-active {
     background: var(--surface-active);
@@ -256,12 +260,12 @@ const RELAY_DATA = {
     padding-left: 22px;
   }
 
-  .card-active:hover { box-shadow: none; border-color: var(--border); }
+  .card-active:hover { background: var(--surface-active); border-color: var(--border-card); }
 
   .card-active .card-name { color: var(--accent); font-size: 16px; letter-spacing: -0.02em; }
 
-  .card-lifecycle-inactive { background: var(--bg); border-color: var(--border); }
-  .card-lifecycle-inactive:hover { box-shadow: none; border-color: var(--border); }
+  .card-lifecycle-inactive { background: var(--bg); border-color: var(--border-card); }
+  .card-lifecycle-inactive:hover { background: var(--bg); border-color: var(--border-card); }
   .card-lifecycle-inactive .card-name { color: var(--text-muted); font-weight: 500; }
   .card-lifecycle-inactive .card-tag,
   .card-lifecycle-inactive .card-state,
@@ -269,13 +273,12 @@ const RELAY_DATA = {
   .card-lifecycle-inactive .card-context,
   .card-lifecycle-inactive .card-next-divider { color: var(--text-muted); opacity: 0.7; }
 
-  /* ── Dark mode interaction overrides ───────────────────────── */
-  /* Borders carry depth on dark surfaces; shadows wash out */
+  /* ── Dark mode environment and interaction overrides ─────────── */
   @media (prefers-color-scheme: dark) {
-    .card:hover                    { box-shadow: none; border-color: #323232; }
-    .card-active                   { box-shadow: none; }
-    .card-active:hover             { box-shadow: none; border-color: var(--border); }
-    .card-lifecycle-inactive:hover { box-shadow: none; border-color: var(--border); }
+    body                           { background: var(--bg); }
+    .card:hover                    { background: var(--surface-hover); border-color: rgba(255,255,255,0.10); }
+    .card-active:hover             { background: var(--surface-active); border-color: var(--border-card); }
+    .card-lifecycle-inactive:hover { background: var(--bg); border-color: var(--border-card); }
   }
 
   .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
@@ -370,7 +373,7 @@ const RELAY_DATA = {
   /* Starts at opacity 0; JS triggers the transition after render */
   #relay-page {
     opacity: 0;
-    transition: opacity 0.22s ease;
+    transition: opacity 0.3s cubic-bezier(0.45, 0, 0.55, 1);
   }
 
   .relay-error {
@@ -521,7 +524,7 @@ const RELAY_DATA = {
   else { noteEl.style.display = "none"; }
 
   /* Footer */
-  var RELAY_VERSION = "1.9";
+  var RELAY_VERSION = "2.0";
   document.getElementById("footer-version").textContent = "BOS Relay " + RELAY_VERSION;
   document.getElementById("last-edited").textContent    = "Last edited: " + formatDate(effectiveLastEdited);
 
