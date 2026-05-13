@@ -8,7 +8,7 @@
 
 <!--
 =================================================================
-  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V2.3
+  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V2.4
 
   HOW TO UPDATE
   ─────────────
@@ -385,23 +385,7 @@ const RELAY_DATA = {
     transition: transform 4s cubic-bezier(0.45, 0, 0.55, 1);
   }
 
-  @keyframes atmospheric-breath {
-    0%, 100% { opacity: 0; }
-    50%       { opacity: 0.008; }
-  }
-
-  #ambient-breath {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(ellipse 55% 45% at 50% 30%, #ffffff 0%, transparent 65%);
-    animation: atmospheric-breath 90s ease-in-out infinite;
-  }
-
-  /* ── Reduced motion compliance ─────────────────────────────── */
-  @media (prefers-reduced-motion: reduce) {
-    #ambient-breath { animation: none; }
-  }
+  #ambient-breath { display: none; }
 
   /* ── Entrance arrival ───────────────────────────────────────── */
   /* Slower settling — environment was already here */
@@ -538,7 +522,11 @@ const RELAY_DATA = {
         r.style.setProperty("--tool-bg",        "#ede9df");
         r.style.setProperty("--border",         "#e5e1d8");
       } else {
-        r.style.removeProperty("--bg");
+        var mo = new Date().getMonth();
+        var sBg = (mo >= 10 || mo <= 1) ? "#f4f3f0" :
+                  (mo >= 4 && mo <= 7)  ? "#f5f4ee" :
+                  "#f5f4f0";
+        r.style.setProperty("--bg", sBg);
         r.style.removeProperty("--surface");
         r.style.removeProperty("--surface-active");
         r.style.removeProperty("--tool-bg");
@@ -551,9 +539,12 @@ const RELAY_DATA = {
   setInterval(applyAtmosphere, 5 * 60 * 1000);
 
   /* Occupancy awareness — coarse zone drift, 3s dwell, 4s CSS transition */
+  /* Drift range diminishes with relay age — a settled room settles further */
   (function () {
     var layer = document.getElementById("ambient-layer");
     if (!layer || isDark) return;
+    var relayAge   = BOS_META.sinceDate ? daysBetween(BOS_META.sinceDate) : 0;
+    var driftScale = relayAge > 90 ? 0.6 : relayAge > 30 ? 0.8 : 1.0;
     var zoneX = 1, zoneY = 1, timer = null;
     document.addEventListener("mousemove", function (e) {
       var nx = Math.min(2, Math.floor(e.clientX / window.innerWidth  * 3));
@@ -562,8 +553,8 @@ const RELAY_DATA = {
         zoneX = nx; zoneY = ny;
         clearTimeout(timer);
         timer = setTimeout(function () {
-          var dx = (zoneX - 1) * 25;
-          var dy = (zoneY - 1) * 15;
+          var dx = Math.round((zoneX - 1) * 25 * driftScale);
+          var dy = Math.round((zoneY - 1) * 15 * driftScale);
           layer.style.transform = "translate(" + dx + "px, " + dy + "px)";
         }, 3000);
       }
@@ -594,7 +585,7 @@ const RELAY_DATA = {
   else { noteEl.style.display = "none"; }
 
   /* Footer */
-  var RELAY_VERSION = "2.3";
+  var RELAY_VERSION = "2.4";
   document.getElementById("footer-version").textContent = "BOS Relay " + RELAY_VERSION;
   document.getElementById("last-edited").textContent    = formatDate(effectiveLastEdited);
 
@@ -729,8 +720,11 @@ const RELAY_DATA = {
     return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
   }
 
-  /* Reveal — double rAF ensures display:block has been painted before opacity transitions */
+  /* Reveal — arrival pacing reflects continuity: longer absence = slower re-entry */
   var pageEl = document.getElementById("relay-page");
+  var arrivalDur   = daysSince > 14 ? "1.8s" : daysSince > 5 ? "1.3s" : "1.0s";
+  var arrivalDelay = daysSince > 14 ? "0.4s" : daysSince > 5 ? "0.25s" : "0.15s";
+  pageEl.style.transition = "opacity " + arrivalDur + " cubic-bezier(0.45, 0, 0.55, 1) " + arrivalDelay;
   pageEl.style.display = "block";
   requestAnimationFrame(function () {
     requestAnimationFrame(function () {
