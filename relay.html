@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOS Relay</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232d5a3d'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='system-ui%2Csans-serif' font-size='18' font-weight='700' fill='white'%3ER%3C/text%3E%3C/svg%3E">
+
+<!--
+=================================================================
+  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V1.7
+
+  HOW TO UPDATE
+  ─────────────
+  Open in any text editor. Edit the two data blocks below.
+  Save. Refresh the browser tab.
+  Bookmark this file (Cmd+D) for one-click daily access.
+
+  ── BOS_META ── set once, never touch again ──────────────────
+  operator    Your name.
+  sinceDate   When you started using BOS Relay (YYYY-MM-DD).
+
+  ── RELAY_DATA ── update at every session end ─────────────────
+  activeProject   Name of your current focus project.
+                  Must match a project name exactly.
+                  One field. One location. Change when focus shifts.
+
+  note            Optional. One line in your own voice.
+                  Operational posture, reminder, or honest context.
+                  Omit when you have nothing to say.
+
+  ── Project fields ────────────────────────────────────────────
+  Update for every project you worked on this session:
+
+    state     Where things stand now. One sentence.
+              Prefix with ~ to flag as approximate:
+                state: "~ Sprint complete — verify before acting."
+
+    next      The single next action. Be specific.
+
+    updated   Write "today" only for projects you worked on.
+              Leave the previous date on projects you did not touch.
+              Projects you do not update should age honestly —
+              that aging is how the health system stays trustworthy.
+
+  Add when needed · delete the entire line when resolved:
+    attention   One sentence if something needs notice this session.
+
+  Add when useful · omit entirely when not:
+    context     One sentence of strategic frame behind the next action.
+    status      "paused" or "done" to recede the card. Omit = active.
+
+  Stable fields — rarely change:
+    name / tag / tool
+
+  ── QUICK CHECKLIST ──────────────────────────────────────────
+  At session end, for the project you worked on:
+    □ state   — where does it stand right now?
+    □ next    — what is the single next action?
+    □ updated — write "today"
+    □ activeProject — correct at the top of RELAY_DATA?
+    □ attention — add if urgent · delete line when resolved
+=================================================================
+-->
+
+<script>
+// ── BOS_META ──────────────────────────────────────────────────
+// Set once. Not part of the session ritual. Ignore during updates.
+
+const BOS_META = {
+  operator:  "Dr. Bhaskarwar",
+  sinceDate: "2026-05-13",
+};
+
+
+// ── RELAY_DATA ────────────────────────────────────────────────
+// This is the only block you edit at session end.
+// Change activeProject when focus shifts — one field, one place.
+
+const RELAY_DATA = {
+
+  activeProject: "DigiX Estate Studio",   // change when focus shifts
+
+  note: "V1.7 deployed. Design phase closed. Inhabiting from here.",
+
+  // lastEdited: "today",   // optional — inferred from projects if omitted
+
+  projects: [
+
+    {
+      // ── update every session ────────────────────────────
+      state:   "DM batch 01 sent (8 leads). F1 follow-up due 2026-05-14. No conversions yet.",
+      next:    "Reel #5 — before/after visual hook to address 77.3% skip rate on Reel #1.",
+      updated: "today",           // "today" only because this was worked on this session
+
+      attention: "F1 follow-up due tomorrow (2026-05-14) — send before end of day.",
+      // ↑ delete this line once resolved
+
+      // ── rarely change ───────────────────────────────────
+      name:    "DigiX Estate Studio",
+      tag:     "Active Operations",
+      tool:    "claude.ai",
+      context: "Distribution is the constraint. Outreach volume and reel quality are the only levers right now.",
+    },
+
+    {
+      // ── update every session ────────────────────────────
+      state:   "V1.7 complete. Deployed to Vercel. Design phase closed.",
+      next:    "Inhabit. Return only when lived friction accumulates over genuine use.",
+      updated: "today",
+
+      // ── rarely change ───────────────────────────────────
+      name:  "BOS Relay",
+      tag:   "Active Build",
+      tool:  "Claude Code",
+    },
+
+    {
+      // ── update every session ────────────────────────────
+      state:   "Hero section and loading screen live at bhaskarwar.co.in. Foundation sprint complete.",
+      next:    "Audit HeroSection and LoadingScreen components. Create deployment SOP.",
+      updated: "2026-05-12",      // explicit date — not touched this session; aging honestly
+
+      // ── rarely change ───────────────────────────────────
+      name:  "Bhaskarwar Estates",
+      tag:   "Foundation",
+      tool:  "Claude Code",
+    },
+
+    {
+      // ── update every session ────────────────────────────
+      state:   "BOS initialized. Pushed to GitHub. BOS Relay V1.7 deployed.",
+      next:    "Commit relay.html V1.7 to Bhaskarwar-OS and verify with a live session.",
+      updated: "today",
+
+      // ── rarely change ───────────────────────────────────
+      name:  "Bhaskarwar-OS",
+      tag:   "Operating System",
+      tool:  "Claude Code",
+    },
+
+  ]
+
+};
+</script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:             #f5f4f0;
+    --surface:        #ffffff;
+    --surface-active: #fafdf9;
+    --border:         #e8e6e1;
+    --border-active:  #2d5a3d;
+    --text-strong:    #1c1c1c;
+    --text-body:      #3d3d3d;
+    --text-muted:     #888880;
+    --accent:         #2d5a3d;
+    --accent-soft:    #eef4f0;
+    --amber:          #9a6b1f;
+    --amber-soft:     #fdf5e6;
+    --amber-border:   #d4a84b;
+    --stale:          #888880;
+    --stale-soft:     #f2f1ee;
+    --tool-bg:        #f0efeb;
+    --tool-text:      #3d3d3d;
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-body);
+    line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 680px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  .header { margin-bottom: 10px; }
+
+  .header-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 5px;
+  }
+
+  .header-title { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-strong); }
+  .header-meta  { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+  .header-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+
+  .operator-note {
+    font-size: 13px;
+    color: var(--text-body);
+    font-style: italic;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    border-left: 2px solid var(--border);
+    line-height: 1.5;
+  }
+
+  .system-summary { font-size: 12px; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.01em; }
+
+  .card-list { display: flex; flex-direction: column; gap: 16px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 24px;
+    transition: box-shadow 0.15s ease;
+  }
+
+  .card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+
+  .card-active {
+    background: var(--surface-active);
+    border-left-width: 3px;
+    padding-left: 22px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  }
+
+  .card-active:hover { box-shadow: 0 3px 20px rgba(0,0,0,0.09); }
+
+  .card-active .card-name { color: var(--accent); font-size: 16px; letter-spacing: -0.015em; }
+
+  .card-lifecycle-inactive { background: var(--bg); border-color: var(--border); }
+  .card-lifecycle-inactive:hover { box-shadow: none; }
+  .card-lifecycle-inactive .card-name { color: var(--text-muted); font-weight: 500; }
+  .card-lifecycle-inactive .card-tag,
+  .card-lifecycle-inactive .card-state,
+  .card-lifecycle-inactive .card-next,
+  .card-lifecycle-inactive .card-context,
+  .card-lifecycle-inactive .card-next-divider { color: var(--text-muted); opacity: 0.7; }
+
+  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+
+  .card-name { font-size: 15px; font-weight: 600; color: var(--text-strong); letter-spacing: -0.01em; }
+
+  .card-tag {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--tool-bg);
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .card-state { font-size: 14px; color: var(--text-body); margin-bottom: 10px; line-height: 1.55; }
+  .card-state-uncertain { color: var(--text-muted); margin-bottom: 4px; }
+
+  .card-uncertain-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 10px;
+    letter-spacing: 0.01em;
+  }
+
+  .card-attention {
+    font-size: 13px;
+    color: var(--text-body);
+    background: var(--amber-soft);
+    border-left: 2px solid var(--amber-border);
+    padding: 9px 12px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .card-attention-age { margin-top: 6px; font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+  .card-next-divider { height: 1px; background: var(--border); margin: 0 0 10px; opacity: 0.6; }
+
+  .card-next { font-size: 14px; color: var(--text-strong); font-weight: 500; line-height: 1.5; margin-bottom: 16px; }
+  .card-next.has-context { margin-bottom: 5px; }
+
+  .card-context { font-size: 13px; color: var(--text-muted); font-style: italic; line-height: 1.5; margin-bottom: 16px; }
+
+  .card-footer { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  .card-tool {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--tool-text);
+    background: var(--tool-bg);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+
+  .card-touched { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+  .card-done-label { font-size: 12px; color: var(--text-muted); font-style: italic; }
+
+  .health { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 6px; }
+  .health-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  .health-current { color: var(--accent); background: var(--accent-soft); }
+  .health-current .health-dot { background: var(--accent); }
+  .health-review  { color: var(--amber); background: var(--amber-soft); }
+  .health-review  .health-dot { background: var(--amber); }
+  .health-stale   { color: var(--stale); background: var(--stale-soft); }
+  .health-stale   .health-dot { background: var(--stale); }
+
+  .page-footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .footer-phrase { font-style: italic; }
+
+  .footer-right { display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-wrap: wrap; }
+  .footer-sep { opacity: 0.4; }
+
+  .relay-error {
+    display: none;
+    padding: 64px 24px;
+    max-width: 680px;
+    margin: 0 auto;
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 15px;
+  }
+
+  .relay-error strong { color: var(--text-strong); }
+</style>
+
+</head>
+<body>
+
+<div class="relay-error" id="relay-error">
+  <strong>BOS Relay couldn't load.</strong><br><br>
+  There is a syntax error in the data block. Open relay.html in a text
+  editor, look for a missing comma, quote, or bracket near your last edit,
+  then save and refresh.
+</div>
+
+<div class="page" id="relay-page" style="display:none">
+
+  <div class="header">
+    <div class="header-top">
+      <div class="header-title">BOS Relay</div>
+      <div class="header-meta" id="today-date"></div>
+    </div>
+    <div class="header-subtitle" id="header-subtitle"></div>
+  </div>
+
+  <div class="operator-note" id="operator-note"></div>
+  <div class="system-summary" id="system-summary"></div>
+  <div class="card-list" id="card-list"></div>
+
+  <div class="page-footer">
+    <span class="footer-phrase">Your operational position, always current.</span>
+    <span class="footer-right">
+      <span id="footer-version"></span>
+      <span class="footer-sep" id="since-sep">·</span>
+      <span id="since-date"></span>
+      <span class="footer-sep">·</span>
+      <span id="last-edited"></span>
+    </span>
+  </div>
+
+</div>
+
+<script>
+(function () {
+
+  if (typeof BOS_META === "undefined" || typeof RELAY_DATA === "undefined") {
+    document.getElementById("relay-error").style.display = "block";
+    return;
+  }
+
+  document.getElementById("relay-page").style.display = "block";
+
+  function todayStr() { return new Date().toISOString().slice(0, 10); }
+
+  function resolveDate(val) {
+    if (typeof val === "string" && val.trim().toLowerCase() === "today") return todayStr();
+    return val || todayStr();
+  }
+
+  function daysBetween(dateStr) {
+    var then = new Date(resolveDate(dateStr));
+    var now  = new Date(todayStr());
+    return Math.max(0, Math.round((now - then) / 86400000));
+  }
+
+  function formatDate(dateStr) {
+    var d = new Date(resolveDate(dateStr) + "T00:00:00");
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+  }
+
+  function formatMonthYear(dateStr) {
+    var d = new Date(resolveDate(dateStr) + "T00:00:00");
+    return d.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  }
+
+  function healthInfo(dateStr) {
+    var d = daysBetween(dateStr);
+    if (d <= 2) return { cls: "health-current", label: "Current"  };
+    if (d <= 5) return { cls: "health-review",  label: "Check in" };
+    return           { cls: "health-stale",   label: "Dormant"  };
+  }
+
+  function isLifecycleInactive(p) { return p.status === "paused" || p.status === "done"; }
+
+  function isActiveProject(p) {
+    if (isLifecycleInactive(p)) return false;
+    if (RELAY_DATA.activeProject) return p.name === RELAY_DATA.activeProject;
+    return !!p.active;
+  }
+
+  /* Time-of-day atmosphere */
+  (function () {
+    var h = new Date().getHours(), r = document.documentElement;
+    if (h < 8) {
+      r.style.setProperty("--bg", "#f6f5f2");
+      r.style.setProperty("--tool-bg", "#f1f0ed");
+    } else if (h >= 20) {
+      r.style.setProperty("--bg",             "#f3f0e8");
+      r.style.setProperty("--surface",        "#fefcf8");
+      r.style.setProperty("--surface-active", "#fdf9f2");
+      r.style.setProperty("--tool-bg",        "#ede9df");
+      r.style.setProperty("--border",         "#e5e1d8");
+    }
+  })();
+
+  /* Infer lastEdited */
+  var effectiveLastEdited = RELAY_DATA.lastEdited;
+  if (!effectiveLastEdited) {
+    var candidates = RELAY_DATA.projects
+      .filter(function (p) { return !isLifecycleInactive(p); })
+      .map(function (p)    { return resolveDate(p.updated || ""); })
+      .filter(Boolean).sort();
+    effectiveLastEdited = candidates.length ? candidates[candidates.length - 1] : todayStr();
+  }
+
+  /* Header */
+  var op = BOS_META.operator || "";
+  if (op) document.title = "BOS Relay · " + op;
+  document.getElementById("header-subtitle").textContent = op ? op + " · Bhaskarwar-OS" : "Bhaskarwar-OS";
+  document.getElementById("today-date").textContent = new Date().toLocaleDateString("en-GB", {
+    weekday: "long", day: "numeric", month: "long", year: "numeric"
+  });
+
+  /* Operator note */
+  var noteEl = document.getElementById("operator-note");
+  if (RELAY_DATA.note && RELAY_DATA.note.trim()) { noteEl.textContent = RELAY_DATA.note; }
+  else { noteEl.style.display = "none"; }
+
+  /* Footer */
+  var RELAY_VERSION = "1.7";
+  document.getElementById("footer-version").textContent = "BOS Relay " + RELAY_VERSION;
+  document.getElementById("last-edited").textContent    = "Last edited: " + formatDate(effectiveLastEdited);
+
+  /* Since-date with elapsed depth */
+  if (BOS_META.sinceDate) {
+    var sd = daysBetween(BOS_META.sinceDate);
+    var st = "Since " + formatMonthYear(BOS_META.sinceDate);
+    if (sd >= 30) {
+      var sm = Math.floor(sd / 30.44), es;
+      if (sm < 12) {
+        es = sm + (sm === 1 ? " month in" : " months in");
+      } else {
+        var sy = Math.floor(sm / 12), sr = sm % 12;
+        es = sy + (sy === 1 ? " year" : " years") +
+          (sr > 0 ? ", " + sr + (sr === 1 ? " month" : " months") : "") + " in";
+      }
+      st += " · " + es;
+    }
+    document.getElementById("since-date").textContent = st;
+  } else {
+    document.getElementById("since-date").style.display = "none";
+    document.getElementById("since-sep").style.display  = "none";
+  }
+
+  /* System summary + recovery */
+  var activeProjects = RELAY_DATA.projects.filter(function (p) { return !isLifecycleInactive(p); });
+  var pausedCount    = RELAY_DATA.projects.filter(function (p) { return p.status === "paused"; }).length;
+  var doneCount      = RELAY_DATA.projects.filter(function (p) { return p.status === "done";   }).length;
+  var hC = { current: 0, review: 0, stale: 0 };
+  activeProjects.forEach(function (p) {
+    var h = healthInfo(p.updated);
+    if      (h.cls === "health-current") hC.current++;
+    else if (h.cls === "health-review")  hC.review++;
+    else                                 hC.stale++;
+  });
+
+  var summaryEl = document.getElementById("system-summary");
+  var daysSince = daysBetween(effectiveLastEdited);
+
+  if (daysSince > 5) {
+    var fp = RELAY_DATA.projects.find(function (p) { return isActiveProject(p); });
+    summaryEl.textContent = fp
+      ? "Returning after " + daysSince + " days — start with " + fp.name
+      : "Returning after " + daysSince + " days — review your projects below and mark your focus";
+  } else {
+    var total = activeProjects.length;
+    var parts = [total + " project" + (total !== 1 ? "s" : "")];
+    if (hC.review === 0 && hC.stale === 0) { parts.push("all current"); }
+    else {
+      if (hC.current > 0) parts.push(hC.current + " current");
+      if (hC.review  > 0) parts.push(hC.review  + " to check in");
+      if (hC.stale   > 0) parts.push(hC.stale   + " dormant");
+    }
+    if (pausedCount > 0) parts.push(pausedCount + " paused");
+    if (doneCount   > 0) parts.push(doneCount   + " done");
+    summaryEl.textContent = parts.join(" · ");
+  }
+
+  /* Sort */
+  function sortOrder(p) {
+    if (isActiveProject(p))      return 0;
+    if (!isLifecycleInactive(p)) return 1;
+    if (p.status === "paused")   return 2;
+    return 3;
+  }
+
+  var projects = RELAY_DATA.projects.slice().sort(function (a, b) { return sortOrder(a) - sortOrder(b); });
+
+  /* Render cards */
+  var list = document.getElementById("card-list");
+
+  projects.forEach(function (p) {
+    var h        = healthInfo(p.updated);
+    var isActive = isActiveProject(p);
+    var isDone   = p.status === "done";
+    var inactive = p.status === "paused" || isDone;
+
+    var rawState      = String(p.state || "");
+    var isUncertain   = rawState.charAt(0) === "~";
+    var displayState  = isUncertain ? rawState.slice(1).trimStart() : rawState;
+    var stateClass    = "card-state" + (isUncertain ? " card-state-uncertain" : "");
+    var uncertainHtml = isUncertain ? '<div class="card-uncertain-note">Approximate — verify before acting</div>' : "";
+
+    var attentionHtml = "";
+    if (p.attention && p.attention.trim()) {
+      var ageNote = "", aa = daysBetween(p.updated);
+      if (aa > 2) ageNote = '<div class="card-attention-age">Note from ' + aa + (aa === 1 ? " day" : " days") + " ago — verify this is still current</div>";
+      attentionHtml = '<div class="card-attention">' + esc(p.attention) + ageNote + "</div>";
+    }
+
+    var hasContext  = !!(p.context && p.context.trim());
+    var contextHtml = hasContext ? '<div class="card-context">' + esc(p.context) + "</div>" : "";
+    var nextClass   = "card-next" + (hasContext ? " has-context" : "");
+
+    var nextSectionHtml = isDone ? "" : [
+      '<div class="card-next-divider"></div>',
+      '<div class="' + nextClass + '">' + esc(p.next || "") + "</div>",
+      contextHtml
+    ].join("");
+
+    var touchedHtml = (h.cls !== "health-current")
+      ? '<span class="card-touched">Last touched ' + formatDate(p.updated) + "</span>" : "";
+
+    var footerHtml = isDone
+      ? '<div class="card-footer"><span class="card-done-label">Completed</span></div>'
+      : ['<div class="card-footer">',
+           '<span class="card-tool">' + esc(p.tool || "") + "</span>",
+           '<span class="health ' + h.cls + '"><span class="health-dot"></span>' + h.label + "</span>",
+           touchedHtml,
+         "</div>"].join("");
+
+    var cardClass = "card" + (isActive ? " card-active" : "") + (inactive ? " card-lifecycle-inactive" : "");
+    var card = document.createElement("div");
+    card.className = cardClass;
+    if (isActive) {
+      card.style.borderLeftColor =
+        h.cls === "health-current" ? "var(--border-active)" :
+        h.cls === "health-review"  ? "var(--amber-border)"  : "var(--stale)";
+    }
+
+    card.innerHTML = [
+      '<div class="card-header"><span class="card-name">' + esc(p.name || "") + '</span><span class="card-tag">' + esc(p.tag || "") + "</span></div>",
+      '<div class="' + stateClass + '">' + esc(displayState) + "</div>",
+      uncertainHtml, attentionHtml, nextSectionHtml, footerHtml
+    ].join("");
+
+    list.appendChild(card);
+  });
+
+  function esc(str) {
+    return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+  }
+
+})();
+</script>
+
+</body>
+</html>
