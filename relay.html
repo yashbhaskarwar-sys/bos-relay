@@ -8,7 +8,7 @@
 
 <!--
 =================================================================
-  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V1.8
+  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V1.9
 
   HOW TO UPDATE
   ─────────────
@@ -81,7 +81,7 @@ const RELAY_DATA = {
 
   activeProject: "DigiX Estate Studio",   // change when focus shifts
 
-  note: "V1.8 deployed. Tier 1 modernization complete. Dark mode, spacing, typography.",
+  note: "V1.9 deployed. Tier 2 refinements: hover tactility, active card presence, attention register, badge grammar.",
 
   // lastEdited: "today",   // optional — inferred from projects if omitted
 
@@ -105,7 +105,7 @@ const RELAY_DATA = {
 
     {
       // ── update every session ────────────────────────────
-      state:   "V1.8 complete. Tier 1 modernization deployed. Dark mode, spacing, typography, entrance fade.",
+      state:   "V1.9 complete. Tier 2 refinements deployed. Hover tactility, active card spatial presence, attention register, badge grammar.",
       next:    "Inhabit. Return only when lived friction accumulates over genuine use.",
       updated: "today",
 
@@ -153,7 +153,7 @@ const RELAY_DATA = {
 
     --bg:             #f5f4f0;
     --surface:        #ffffff;
-    --surface-active: #fafdf9;
+    --surface-active: #f6faf7;
     --border:         #e8e6e1;
     --border-active:  #2d5a3d;
     --text-strong:    #1c1c1c;
@@ -162,7 +162,7 @@ const RELAY_DATA = {
     --accent:         #2d5a3d;
     --accent-soft:    #eef4f0;
     --amber:          #9a6b1f;
-    --amber-soft:     #fdf5e6;
+    --amber-soft:     #fefaf3;
     --amber-border:   #d4a84b;
     --stale:          #888880;
     --stale-soft:     #f2f1ee;
@@ -186,7 +186,7 @@ const RELAY_DATA = {
       --accent:         #72c48a;
       --accent-soft:    #192819;
       --amber:          #c8952a;
-      --amber-soft:     #1f1608;
+      --amber-soft:     #1c1812;
       --amber-border:   #7a5c1e;
       --stale:          #484644;
       --stale-soft:     #1c1b1a;
@@ -248,21 +248,20 @@ const RELAY_DATA = {
     transition: box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
-  .card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-color: #d4d2cd; }
 
   .card-active {
     background: var(--surface-active);
     border-left-width: 3px;
     padding-left: 22px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
   }
 
-  .card-active:hover { box-shadow: 0 3px 20px rgba(0,0,0,0.09); }
+  .card-active:hover { box-shadow: none; border-color: var(--border); }
 
   .card-active .card-name { color: var(--accent); font-size: 16px; letter-spacing: -0.02em; }
 
   .card-lifecycle-inactive { background: var(--bg); border-color: var(--border); }
-  .card-lifecycle-inactive:hover { box-shadow: none; }
+  .card-lifecycle-inactive:hover { box-shadow: none; border-color: var(--border); }
   .card-lifecycle-inactive .card-name { color: var(--text-muted); font-weight: 500; }
   .card-lifecycle-inactive .card-tag,
   .card-lifecycle-inactive .card-state,
@@ -270,13 +269,13 @@ const RELAY_DATA = {
   .card-lifecycle-inactive .card-context,
   .card-lifecycle-inactive .card-next-divider { color: var(--text-muted); opacity: 0.7; }
 
-  /* ── Dark mode shadow overrides ────────────────────────────── */
-  /* On dark surfaces, borders do the depth work — shadows wash out */
+  /* ── Dark mode interaction overrides ───────────────────────── */
+  /* Borders carry depth on dark surfaces; shadows wash out */
   @media (prefers-color-scheme: dark) {
-    .card:hover       { box-shadow: none; border-color: #323232; }
-    .card-active      { box-shadow: none; }
-    .card-active:hover { box-shadow: none; }
-    .card-lifecycle-inactive:hover { border-color: var(--border); }
+    .card:hover                    { box-shadow: none; border-color: #323232; }
+    .card-active                   { box-shadow: none; }
+    .card-active:hover             { box-shadow: none; border-color: var(--border); }
+    .card-lifecycle-inactive:hover { box-shadow: none; border-color: var(--border); }
   }
 
   .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
@@ -333,13 +332,13 @@ const RELAY_DATA = {
     background: var(--tool-bg);
     border: 1px solid var(--border);
     padding: 3px 10px;
-    border-radius: 6px;
+    border-radius: 4px;
   }
 
   .card-touched { font-size: 12px; color: var(--text-muted); margin-left: auto; }
   .card-done-label { font-size: 12px; color: var(--text-muted); font-style: italic; }
 
-  .health { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 6px; }
+  .health { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
   .health-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
   .health-current { color: var(--accent); background: var(--accent-soft); }
@@ -522,7 +521,7 @@ const RELAY_DATA = {
   else { noteEl.style.display = "none"; }
 
   /* Footer */
-  var RELAY_VERSION = "1.8";
+  var RELAY_VERSION = "1.9";
   document.getElementById("footer-version").textContent = "BOS Relay " + RELAY_VERSION;
   document.getElementById("last-edited").textContent    = "Last edited: " + formatDate(effectiveLastEdited);
 
