@@ -8,7 +8,7 @@
 
 <!--
 =================================================================
-  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V1.7
+  BOS RELAY — Operational Bridge · Bhaskarwar-OS · V1.8
 
   HOW TO UPDATE
   ─────────────
@@ -81,7 +81,7 @@ const RELAY_DATA = {
 
   activeProject: "DigiX Estate Studio",   // change when focus shifts
 
-  note: "V1.7 deployed. Design phase closed. Inhabiting from here.",
+  note: "V1.8 deployed. Tier 1 modernization complete. Dark mode, spacing, typography.",
 
   // lastEdited: "today",   // optional — inferred from projects if omitted
 
@@ -105,7 +105,7 @@ const RELAY_DATA = {
 
     {
       // ── update every session ────────────────────────────
-      state:   "V1.7 complete. Deployed to Vercel. Design phase closed.",
+      state:   "V1.8 complete. Tier 1 modernization deployed. Dark mode, spacing, typography, entrance fade.",
       next:    "Inhabit. Return only when lived friction accumulates over genuine use.",
       updated: "today",
 
@@ -129,8 +129,8 @@ const RELAY_DATA = {
 
     {
       // ── update every session ────────────────────────────
-      state:   "BOS initialized. Pushed to GitHub. BOS Relay V1.7 deployed.",
-      next:    "Commit relay.html V1.7 to Bhaskarwar-OS and verify with a live session.",
+      state:   "BOS initialized. Pushed to GitHub. BOS Relay V1.8 deployed.",
+      next:    "Commit relay.html V1.8 to Bhaskarwar-OS and verify with a live session.",
       updated: "today",
 
       // ── rarely change ───────────────────────────────────
@@ -147,7 +147,10 @@ const RELAY_DATA = {
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* ── Light mode tokens ─────────────────────────────────────── */
   :root {
+    color-scheme: light;
+
     --bg:             #f5f4f0;
     --surface:        #ffffff;
     --surface-active: #fafdf9;
@@ -167,44 +170,73 @@ const RELAY_DATA = {
     --tool-text:      #3d3d3d;
   }
 
+  /* ── Dark mode tokens ──────────────────────────────────────── */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+
+      --bg:             #111111;
+      --surface:        #1a1a1a;
+      --surface-active: #1b2219;
+      --border:         #282828;
+      --border-active:  #3d6e4f;
+      --text-strong:    #ede9e3;
+      --text-body:      #9a9690;
+      --text-muted:     #5e5c58;
+      --accent:         #72c48a;
+      --accent-soft:    #192819;
+      --amber:          #c8952a;
+      --amber-soft:     #1f1608;
+      --amber-border:   #7a5c1e;
+      --stale:          #484644;
+      --stale-soft:     #1c1b1a;
+      --tool-bg:        #222221;
+      --tool-text:      #7a7874;
+    }
+  }
+
   html, body { height: 100%; }
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     background: var(--bg);
     color: var(--text-body);
-    line-height: 1.6;
+    line-height: 1.55;
     font-size: 15px;
+    letter-spacing: -0.01em;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1;
   }
 
-  .page { max-width: 680px; margin: 0 auto; padding: 48px 24px 80px; }
+  .page { max-width: 680px; margin: 0 auto; padding: 48px 24px 72px; }
 
-  .header { margin-bottom: 10px; }
+  .header { margin-bottom: 8px; }
 
   .header-top {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
 
-  .header-title { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-strong); }
-  .header-meta  { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
-  .header-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+  .header-title   { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-strong); }
+  .header-meta    { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+  .header-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
 
   .operator-note {
     font-size: 13px;
     color: var(--text-body);
     font-style: italic;
     margin-bottom: 20px;
-    padding-left: 10px;
+    padding-left: 12px;
     border-left: 2px solid var(--border);
     line-height: 1.5;
   }
 
-  .system-summary { font-size: 12px; color: var(--text-muted); margin-bottom: 28px; letter-spacing: 0.01em; }
+  .system-summary { font-size: 12px; color: var(--text-muted); margin-bottom: 32px; }
 
   .card-list { display: flex; flex-direction: column; gap: 16px; }
 
@@ -212,8 +244,8 @@ const RELAY_DATA = {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 22px 24px;
-    transition: box-shadow 0.15s ease;
+    padding: 20px 24px;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
   .card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
@@ -227,7 +259,7 @@ const RELAY_DATA = {
 
   .card-active:hover { box-shadow: 0 3px 20px rgba(0,0,0,0.09); }
 
-  .card-active .card-name { color: var(--accent); font-size: 16px; letter-spacing: -0.015em; }
+  .card-active .card-name { color: var(--accent); font-size: 16px; letter-spacing: -0.02em; }
 
   .card-lifecycle-inactive { background: var(--bg); border-color: var(--border); }
   .card-lifecycle-inactive:hover { box-shadow: none; }
@@ -238,9 +270,18 @@ const RELAY_DATA = {
   .card-lifecycle-inactive .card-context,
   .card-lifecycle-inactive .card-next-divider { color: var(--text-muted); opacity: 0.7; }
 
-  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  /* ── Dark mode shadow overrides ────────────────────────────── */
+  /* On dark surfaces, borders do the depth work — shadows wash out */
+  @media (prefers-color-scheme: dark) {
+    .card:hover       { box-shadow: none; border-color: #323232; }
+    .card-active      { box-shadow: none; }
+    .card-active:hover { box-shadow: none; }
+    .card-lifecycle-inactive:hover { border-color: var(--border); }
+  }
 
-  .card-name { font-size: 15px; font-weight: 600; color: var(--text-strong); letter-spacing: -0.01em; }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+
+  .card-name { font-size: 15px; font-weight: 600; color: var(--text-strong); letter-spacing: -0.015em; }
 
   .card-tag {
     font-size: 11px;
@@ -252,14 +293,14 @@ const RELAY_DATA = {
     white-space: nowrap;
   }
 
-  .card-state { font-size: 14px; color: var(--text-body); margin-bottom: 10px; line-height: 1.55; }
+  .card-state { font-size: 14px; color: var(--text-body); margin-bottom: 8px; line-height: 1.55; }
   .card-state-uncertain { color: var(--text-muted); margin-bottom: 4px; }
 
   .card-uncertain-note {
     font-size: 11px;
     color: var(--text-muted);
     font-style: italic;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     letter-spacing: 0.01em;
   }
 
@@ -268,22 +309,22 @@ const RELAY_DATA = {
     color: var(--text-body);
     background: var(--amber-soft);
     border-left: 2px solid var(--amber-border);
-    padding: 9px 12px;
+    padding: 8px 12px;
     border-radius: 0 6px 6px 0;
     margin-bottom: 12px;
     line-height: 1.5;
   }
 
-  .card-attention-age { margin-top: 6px; font-size: 11px; color: var(--text-muted); font-style: italic; }
+  .card-attention-age { margin-top: 4px; font-size: 11px; color: var(--text-muted); font-style: italic; }
 
-  .card-next-divider { height: 1px; background: var(--border); margin: 0 0 10px; opacity: 0.6; }
+  .card-next-divider { height: 1px; background: var(--border); margin: 0 0 8px; opacity: 0.6; }
 
   .card-next { font-size: 14px; color: var(--text-strong); font-weight: 500; line-height: 1.5; margin-bottom: 16px; }
-  .card-next.has-context { margin-bottom: 5px; }
+  .card-next.has-context { margin-bottom: 4px; }
 
   .card-context { font-size: 13px; color: var(--text-muted); font-style: italic; line-height: 1.5; margin-bottom: 16px; }
 
-  .card-footer { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .card-footer { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
   .card-tool {
     font-size: 12px;
@@ -298,7 +339,7 @@ const RELAY_DATA = {
   .card-touched { font-size: 12px; color: var(--text-muted); margin-left: auto; }
   .card-done-label { font-size: 12px; color: var(--text-muted); font-style: italic; }
 
-  .health { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 6px; }
+  .health { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 6px; }
   .health-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
   .health-current { color: var(--accent); background: var(--accent-soft); }
@@ -323,8 +364,15 @@ const RELAY_DATA = {
 
   .footer-phrase { font-style: italic; }
 
-  .footer-right { display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-wrap: wrap; }
+  .footer-right { display: flex; align-items: center; gap: 8px; white-space: nowrap; flex-wrap: wrap; }
   .footer-sep { opacity: 0.4; }
+
+  /* ── Entrance fade ─────────────────────────────────────────── */
+  /* Starts at opacity 0; JS triggers the transition after render */
+  #relay-page {
+    opacity: 0;
+    transition: opacity 0.22s ease;
+  }
 
   .relay-error {
     display: none;
@@ -385,8 +433,6 @@ const RELAY_DATA = {
     return;
   }
 
-  document.getElementById("relay-page").style.display = "block";
-
   function todayStr() { return new Date().toISOString().slice(0, 10); }
 
   function resolveDate(val) {
@@ -425,18 +471,30 @@ const RELAY_DATA = {
     return !!p.active;
   }
 
-  /* Time-of-day atmosphere */
+  /* Time-of-day atmosphere — dark-mode aware */
   (function () {
-    var h = new Date().getHours(), r = document.documentElement;
-    if (h < 8) {
-      r.style.setProperty("--bg", "#f6f5f2");
-      r.style.setProperty("--tool-bg", "#f1f0ed");
-    } else if (h >= 20) {
-      r.style.setProperty("--bg",             "#f3f0e8");
-      r.style.setProperty("--surface",        "#fefcf8");
-      r.style.setProperty("--surface-active", "#fdf9f2");
-      r.style.setProperty("--tool-bg",        "#ede9df");
-      r.style.setProperty("--border",         "#e5e1d8");
+    var h      = new Date().getHours();
+    var r      = document.documentElement;
+    var isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    if (isDark) {
+      if (h < 8) {
+        r.style.setProperty("--bg", "#0f0f11");
+      } else if (h >= 20) {
+        r.style.setProperty("--bg",      "#131210");
+        r.style.setProperty("--surface", "#1c1b19");
+      }
+    } else {
+      if (h < 8) {
+        r.style.setProperty("--bg",      "#f6f5f2");
+        r.style.setProperty("--tool-bg", "#f1f0ed");
+      } else if (h >= 20) {
+        r.style.setProperty("--bg",             "#f3f0e8");
+        r.style.setProperty("--surface",        "#fefcf8");
+        r.style.setProperty("--surface-active", "#fdf9f2");
+        r.style.setProperty("--tool-bg",        "#ede9df");
+        r.style.setProperty("--border",         "#e5e1d8");
+      }
     }
   })();
 
@@ -464,7 +522,7 @@ const RELAY_DATA = {
   else { noteEl.style.display = "none"; }
 
   /* Footer */
-  var RELAY_VERSION = "1.7";
+  var RELAY_VERSION = "1.8";
   document.getElementById("footer-version").textContent = "BOS Relay " + RELAY_VERSION;
   document.getElementById("last-edited").textContent    = "Last edited: " + formatDate(effectiveLastEdited);
 
@@ -597,6 +655,15 @@ const RELAY_DATA = {
   function esc(str) {
     return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
   }
+
+  /* Reveal — double rAF ensures display:block has been painted before opacity transitions */
+  var pageEl = document.getElementById("relay-page");
+  pageEl.style.display = "block";
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      pageEl.style.opacity = "1";
+    });
+  });
 
 })();
 </script>
